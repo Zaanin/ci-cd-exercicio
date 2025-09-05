@@ -1,4 +1,4 @@
-from app import soma
+from app import soma, multiplica
 
 def test_soma():
     assert soma(2, 3) == 5
