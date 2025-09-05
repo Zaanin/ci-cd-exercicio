@@ -18,7 +18,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'  # Aqui já está usando o Python 3.11
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
@@ -30,3 +30,30 @@ jobs:
 
       - name: Run tests
         run: pytest test_app.py
+
+      - name: Build artifact
+        run: |
+          chmod +x build.sh
+          ./build.sh
+
+      - name: Create Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./projeto.zip
+          asset_name: projeto.zip
+          asset_content_type: application/zip
