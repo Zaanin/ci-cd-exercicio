@@ -6,6 +6,6 @@ def test_soma():
     assert soma(0, 0) == 0
 
 def test_multiplica():
-    assert soma(2, 3) == 6
-    assert soma(1, 1) == 1
-    assert soma(10, 0) == 0
+    assert multiplica(2, 3) == 6
+    assert multiplica(1, 1) == 1
+    assert multiplica(10, 0) == 0
